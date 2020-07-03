@@ -57,7 +57,7 @@ function checkResults (calculator, glossary, response) {
       $("section.output").show();
     }
   } else {
-    $("#output-area").text("There was an error, please try again.");
+    $("#output-area").text("There was a network error, please try again.");
     $("section.output").show();
   }
 }
