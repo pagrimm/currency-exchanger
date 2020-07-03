@@ -1,4 +1,4 @@
-# Project Name
+# Currency Exchanger
 **Weekly Project for Epicodus**
 **By Peter Grimm, 07.03.2020**
 
