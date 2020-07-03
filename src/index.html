@@ -25,10 +25,7 @@
               <span class="input-group-text" id="from-label">From</span>
             </div>
             <select class="form-control" name="from-currency" id="from-input" aria-label="from" aria-describedby="from-label" required>
-              <option value="USD">USD</option>
-              <option value="AED">AED</option>
-              <option value="ARS">ARS</option>
-              <option value="AUD">AUD</option>
+              <option value="" disabled selected hidden>Select currency</option>
             </select>
           </div>
           <div class="input-group mb-3">
@@ -36,10 +33,8 @@
               <span class="input-group-text" id="to-label">To</span>
             </div>
             <select class="form-control" name="to-currency" id="to-input" aria-label="to" aria-describedby="to-label" required>
-              <option value="USD">USD</option>
-              <option value="AED">AED</option>
-              <option value="ARS">ARS</option>
-              <option value="AUD">AUD</option>
+              <option value="" disabled selected hidden>Select currency</option>
+              <option value="All">All currencies</option>
             </select>
           </div>
           <button type="submit" class="btn btn-primary" id="convert-button">Convert</button>
