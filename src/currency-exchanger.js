@@ -53,3 +53,11 @@ export class ExchangeGlossary {
     this.ZAR = {"name": "South African Rand", "symbol": ""};
   }
 }
+
+export class InputObject {
+  constructor(amount, from, to) {
+    this.amount = amount;
+    this.from = from;
+    this.to = to;
+  }
+}

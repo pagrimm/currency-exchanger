@@ -2,14 +2,21 @@ import 'bootstrap';
 import './bootstrap.min.css';
 import './styles.css';
 import $ from "jquery";
-//import {ExchangeService} from './exchange-service.js'
+import { ExchangeService } from './../src/exchange-service.js';
 import { ExchangeGlossary } from './../src/currency-exchanger.js';
+import { InputObject } from './../src/currency-exchanger.js';
 
 $(document).ready(function() {
-  let glossary = new ExchangeGlossary();
+  const glossary = new ExchangeGlossary();
   populateSelect(glossary);
   $("form").submit(function(event) {
     event.preventDefault();
+    let input = getInput();
+    (async () => {
+      let exchangeService = new ExchangeService();
+      const response = await exchangeService.getExchange(input.from);
+      showResults(input, glossary, response);
+    })();
   });
 });
 
@@ -20,14 +27,27 @@ function populateSelect (glossary) {
   }
 }
 
-function showResults (amount, from, to, glossary, response) {
-  if (to === "All") {
-    for (const currency in response.conversion_rates) {
-      let convertedAmount = (amount * response.conversion_rates[currency]).toFixed(2);
-      $("#output-area").append(`<div>${amount} in ${glossary[from].name} is equal to ${convertedAmount} in ${glossary[currency].name}.</div>`)
+function getInput() {
+  let amount = $("#amount-input").val();
+  let from = $("#from-input").val();
+  let to = $("#to-input").val();
+  document.getElementById("input-form").reset();
+  return new InputObject(amount, from, to);
+}
+
+function showResults (input, glossary, response) {
+  $("#output-area").html("");
+  if (response) {
+    if (input.to === "All") {
+      for (const currency in response.conversion_rates) {
+        let convertedAmount = (input.amount * response.conversion_rates[currency]).toFixed(2);
+        $("#output-area").append(`<div>${input.amount} in ${glossary[input.from].name} is equal to ${convertedAmount} in ${glossary[currency].name}.</div>`);
+      } 
     } else {
-      let convertedAmount = (amount * response.conversion_rates[to]).toFixed(2);
-      $("#output-area").append(`<div>${amount} in ${glossary[from].name} is equal to ${convertedAmount} in ${glossary[to].name}.</div>`)
+      let convertedAmount = (input.amount * response.conversion_rates[input.to]).toFixed(2);
+      $("#output-area").append(`<div>${input.amount} in ${glossary[input.from].name} is equal to ${convertedAmount} in ${glossary[input.to].name}.</div>`);
     }
+  } else {
+    $("#output-area").text("There was an error, please try again.");
   }
 }

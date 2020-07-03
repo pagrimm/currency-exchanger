@@ -4,18 +4,19 @@ export class ExchangeService {
       try {
         let response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/${currency}`);
         let jsonResponse;
-        if (response.ok && response.status == 200) {
+        if (response.ok && response.status == 200 && response.result !== "error") {
           jsonResponse = await response.json();
         } else {
           jsonResponse = false;
         }
-        sessionStorage.setItem(`${currency}Response`, jsonResponse);
+        sessionStorage.setItem(`${currency}Response`, JSON.stringify(jsonResponse));
         return jsonResponse;
       } catch(error) {
         return false;
       }
     } else {
-      return sessionStorage.getItem(`${currency}Response`)
+      let response = await JSON.parse(sessionStorage.getItem(`${currency}Response`));
+      return response;
     }
   }
 }
