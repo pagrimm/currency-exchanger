@@ -11,14 +11,27 @@ $(document).ready(function() {
   populateSelect(glossary);
   $("form").submit(function(event) {
     event.preventDefault();
-    let calculator = createCalculator();
-    (async () => {
-      let exchangeService = new ExchangeService();
-      const response = await exchangeService.getExchange();
-      showResults(calculator, glossary, response);
-    })();
+    if (validateInput()) {
+      let calculator = createCalculator();
+      (async () => {
+        let exchangeService = new ExchangeService();
+        const response = await exchangeService.getExchange();
+        showResults(calculator, glossary, response);
+      })();
+    } else {
+      $("section.output").show();
+      $("#output-area").html(`<div class="error text-danger">Please enter a valid amount of currency.</div>`);
+    }
   });
 });
+
+function validateInput () {
+  if (/^[0-9]*(\.\d{1,2})?$/.test($("#amount-input").val())) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 function populateSelect (glossary) {
   for (const currency in glossary) {
@@ -54,6 +67,7 @@ function showResults (calculator, glossary, response) {
   } else {
     $("#output-area").text("There was an error, please try again.");
   }
+  $("section.output").show();
 }
 
 function addSymbols (glossary) {
