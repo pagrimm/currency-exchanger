@@ -16,7 +16,7 @@ $(document).ready(function() {
       (async () => {
         let exchangeService = new ExchangeService();
         const response = await exchangeService.getExchange();
-        showResults(calculator, glossary, response);
+        checkResults(calculator, glossary, response);
       })();
     } else {
       $("section.output").show();
@@ -48,25 +48,35 @@ function createCalculator() {
   return new ExchangeCalculator(amount, from, to);
 }
 
-function showResults (calculator, glossary, response) {
-  $("#output-area").html("");
+function checkResults (calculator, glossary, response) {
   if (response) {
-    $("#output-area").append(`<div><span class="output-amount ${calculator.from}">${calculator.amount}<span> (${glossary[calculator.from].name}) is equal to:</div>`);
-    if (calculator.to === "All") {
-      for (const currency in response.conversion_rates) {
-        if (!(calculator.from === currency)) {
-          let convertedAmount = calculator.calculateAmount(response, currency);
-          $("#output-area").append(`<div><span class="output-amount ${currency}">${convertedAmount}</span> (${glossary[currency].name})</div>`);
-        }
-      } 
+    if (checkCurrencies(calculator, response)) {
+      showResults(calculator, glossary, response);
     } else {
-      let convertedAmount = calculator.calculateAmount(response);
-      $("#output-area").append(`<div><span class="output-amount ${calculator.to}">${convertedAmount}</span> (${glossary[calculator.to].name})</div>`);
+      $("#output-area").text("Entered currency does not exist, please try again.");
+      $("section.output").show();
     }
-    addSymbols(glossary);
   } else {
     $("#output-area").text("There was an error, please try again.");
+    $("section.output").show();
   }
+}
+
+function showResults (calculator, glossary, response) {
+  $("#output-area").html("");
+  $("#output-area").append(`<div><span class="output-amount ${calculator.from}">${calculator.amount}</span> (${glossary[calculator.from].name}) is equal to:</div>`);
+  if (calculator.to === "All") {
+    for (const currency in response.conversion_rates) {
+      if (!(calculator.from === currency)) {
+        let convertedAmount = calculator.calculateAmount(response, currency);
+        $("#output-area").append(`<div><span class="output-amount ${currency}">${convertedAmount}</span> (${glossary[currency].name})</div>`);
+      }
+    }
+  } else {
+    let convertedAmount = calculator.calculateAmount(response);
+    $("#output-area").append(`<div><span class="output-amount ${calculator.to}">${convertedAmount}</span> (${glossary[calculator.to].name})</div>`);
+  }
+  addSymbols(glossary);
   $("section.output").show();
 }
 
@@ -75,4 +85,22 @@ function addSymbols (glossary) {
     let currency = $(this).attr("class").split(" ").pop();
     $(this)[glossary[currency].symbolPosition](glossary[currency].symbol);
   });
+}
+
+function checkCurrencies (calculator, response) {
+  let checkTo = false;
+  let checkFrom = false;
+  for (const currency in response.conversion_rates) {
+    if (calculator.to === currency || calculator.to === "All") {
+      checkTo = true;
+    }
+    if (calculator.from === currency) {
+      checkFrom = true;
+    }
+  }
+  if (checkTo && checkFrom){
+    return true;
+  } else {
+    return false;
+  }
 }
