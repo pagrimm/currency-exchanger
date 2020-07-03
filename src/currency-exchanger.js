@@ -8,11 +8,11 @@ export class ExchangeGlossary {
     this.BRL = {"name": "Brazilian Reals", "symbol": "R$"};
     this.BSD = {"name": "Bahamian Dollars", "symbol": "$"};
     this.CAD = {"name": "Canadian Dollars", "symbol": "$"};
-    this.CHF = {"name": "Swiss Francs", "symbol": "CHf "};
+    this.CHF = {"name": "Swiss Francs", "symbol": "CHf"};
     this.CLP = {"name": "Chilean Pesos", "symbol": "$"};
     this.CNY = {"name": "Yuan Renminbi", "symbol": "¥"};
     this.COP = {"name": "Colombian Pesos", "symbol": "$"};
-    this.CZK = {"name": "Czech Korun", "symbol": "CZK "};
+    this.CZK = {"name": "Czech Korun", "symbol": "CZK"};
     this.DKK = {"name": "Danish Kroner", "symbol": "kr"};
     this.DOP = {"name": "Dominican Pesos", "symbol": ""};
     this.EGP = {"name": "Egyptian Pounds", "symbol": ""};
@@ -54,10 +54,20 @@ export class ExchangeGlossary {
   }
 }
 
-export class InputObject {
+export class ExchangeCalculator {
   constructor(amount, from, to) {
     this.amount = amount;
     this.from = from;
     this.to = to;
+  }
+  
+  calculateAmount (response, to = this.to, from = this.from, amount = this.amount) {
+    let outputAmount;
+    if (from === "USD") {
+      outputAmount = (amount * response.conversion_rates[to]).toFixed(2);
+    } else {
+      outputAmount = ((amount / response.conversion_rates[from]) * response.conversion_rates[to]).toFixed(2);
+    }
+    return outputAmount;
   }
 }

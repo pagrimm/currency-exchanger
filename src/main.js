@@ -4,60 +4,50 @@ import './styles.css';
 import $ from "jquery";
 import { ExchangeService } from './../src/exchange-service.js';
 import { ExchangeGlossary } from './../src/currency-exchanger.js';
-import { InputObject } from './../src/currency-exchanger.js';
+import { ExchangeCalculator } from './../src/currency-exchanger.js';
 
 $(document).ready(function() {
   const glossary = new ExchangeGlossary();
   populateSelect(glossary);
   $("form").submit(function(event) {
     event.preventDefault();
-    let input = getInput();
+    let calculator = createCalculator();
     (async () => {
       let exchangeService = new ExchangeService();
       const response = await exchangeService.getExchange();
-      showResults(input, glossary, response);
+      showResults(calculator, glossary, response);
     })();
   });
 });
 
 function populateSelect (glossary) {
   for (const currency in glossary) {
-    $("#from-input").append(`<option value="${currency}">${glossary[currency].name}</option>`);
-    $("#to-input").append(`<option value="${currency}">${glossary[currency].name}</option>`);
+    $("#from-input").append(`<option value="${currency}">${currency} - ${glossary[currency].name}</option>`);
+    $("#to-input").append(`<option value="${currency}">${currency} - ${glossary[currency].name}</option>`);
   }
 }
 
-function getInput() {
+function createCalculator() {
   let amount = $("#amount-input").val();
   let from = $("#from-input").val();
   let to = $("#to-input").val();
   document.getElementById("input-form").reset();
-  return new InputObject(amount, from, to);
+  return new ExchangeCalculator(amount, from, to);
 }
 
-function showResults (input, glossary, response) {
+function showResults (calculator, glossary, response) {
   $("#output-area").html("");
   if (response) {
-    if (input.to === "All") {
+    if (calculator.to === "All") {
       for (const currency in response.conversion_rates) {
-        let convertedAmount = calculateAmount(input.amount, input.from, currency, response);
-        $("#output-area").append(`<div>${input.amount} in ${glossary[input.from].name} is equal to ${convertedAmount} in ${glossary[currency].name}.</div>`);
+        let convertedAmount = calculator.calculateAmount(response, currency);
+        $("#output-area").append(`<div>${calculator.amount} in ${glossary[calculator.from].name} is equal to ${convertedAmount} in ${glossary[currency].name}.</div>`);
       } 
     } else {
-      let convertedAmount = calculateAmount(input.amount, input.from, input.to, response);
-      $("#output-area").append(`<div>${input.amount} in ${glossary[input.from].name} is equal to ${convertedAmount} in ${glossary[input.to].name}.</div>`);
+      let convertedAmount = calculator.calculateAmount(response);
+      $("#output-area").append(`<div>${calculator.amount} in ${glossary[calculator.from].name} is equal to ${convertedAmount} in ${glossary[calculator.to].name}.</div>`);
     }
   } else {
     $("#output-area").text("There was an error, please try again.");
   }
-}
-
-function calculateAmount (amount, from, to, response) {
-  let outputAmount;
-  if (from === "USD") {
-    outputAmount = (amount * response.conversion_rates[to]).toFixed(2);
-  } else {
-    outputAmount = ((amount / response.conversion_rates[from]) * response.conversion_rates[to]).toFixed(2);
-  }
-  return outputAmount;
 }
