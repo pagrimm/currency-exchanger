@@ -38,14 +38,17 @@ function createCalculator() {
 function showResults (calculator, glossary, response) {
   $("#output-area").html("");
   if (response) {
+    $("#output-area").append(`<div>${calculator.amount} in ${glossary[calculator.from].name} is equal to...</div>`);
     if (calculator.to === "All") {
       for (const currency in response.conversion_rates) {
-        let convertedAmount = calculator.calculateAmount(response, currency);
-        $("#output-area").append(`<div>${calculator.amount} in ${glossary[calculator.from].name} is equal to ${convertedAmount} in ${glossary[currency].name}.</div>`);
+        if (!(calculator.from === currency)) {
+          let convertedAmount = calculator.calculateAmount(response, currency);
+          $("#output-area").append(`<div>${convertedAmount} in ${glossary[currency].name}</div>`);
+        }
       } 
     } else {
       let convertedAmount = calculator.calculateAmount(response);
-      $("#output-area").append(`<div>${calculator.amount} in ${glossary[calculator.from].name} is equal to ${convertedAmount} in ${glossary[calculator.to].name}.</div>`);
+      $("#output-area").append(`<div>${convertedAmount} in ${glossary[calculator.to].name}</div>`);
     }
   } else {
     $("#output-area").text("There was an error, please try again.");
