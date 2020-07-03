@@ -3,13 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="css/bootstrap.css" rel="stylesheet" type = "text/css">
-  <link href="css/styles.css" rel="stylesheet" type = "text/css">
-  <script src="js/jquery-3.5.1.js"></script>
-  <script src="js/scripts.js"></script>
-  <title>Document</title>
+  <title>Currency Exchanger</title>
 </head>
-<body>
-  
+<body class="container">
+  <header class="jumbotron">
+    <h1>Currency Exchanger</h1>
+  </header>
+  <section class="input card border-primary mb-3">
+    <div class="card-header">Exchange Calculator</div>
+    <div class="card-body">
+      <div class="card-text">
+        <form>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="amount-label">Amount</span>
+            </div>
+            <input type="number" class="form-control" aria-label="amount" aria-describedby="amount-label" step="0.01" required>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="from-label">From</span>
+            </div>
+            <select class="form-control" name="from-currency" id="from-input" aria-label="from" aria-describedby="from-label" required>
+              <option value="USD">USD</option>
+              <option value="AED">AED</option>
+              <option value="ARS">ARS</option>
+              <option value="AUD">AUD</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="to-label">To</span>
+            </div>
+            <select class="form-control" name="to-currency" id="to-input" aria-label="to" aria-describedby="to-label" required>
+              <option value="USD">USD</option>
+              <option value="AED">AED</option>
+              <option value="ARS">ARS</option>
+              <option value="AUD">AUD</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" id="convert-button">Convert</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <section class="output card border-primary mb-3">
+    <div class="card-header">Results</div>
+    <div class="card-body">
+      <div class="card-text"></div>
+    </div>
+  </section>
 </body>
 </html>
