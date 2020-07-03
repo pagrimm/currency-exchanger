@@ -3,11 +3,11 @@ export class ExchangeGlossary {
     this.USD = {"name": "US dollars", "symbol": "$", "symbolPosition": "before"};
     this.AED = {"name": "UAE dirham", "symbol": "د.إ", "symbolPosition": "after"};
     this.ARS = {"name": "Argentine pesos", "symbol": "$", "symbolPosition": "before"};
-    this.AUD = {"name": "Australian dollars", "symbol": "$", "symbolPosition": "before"};
+    this.AUD = {"name": "Australian dollars", "symbol": "AU$", "symbolPosition": "before"};
     this.BGN = {"name": "Bulgarian leva", "symbol": " лв", "symbolPosition": "after"};
     this.BRL = {"name": "Brazilian reals", "symbol": "R$", "symbolPosition": "before"};
     this.BSD = {"name": "Bahamian dollars", "symbol": "$", "symbolPosition": "before"};
-    this.CAD = {"name": "Canadian dollars", "symbol": "$", "symbolPosition": "before"};
+    this.CAD = {"name": "Canadian dollars", "symbol": "CA$", "symbolPosition": "before"};
     this.CHF = {"name": "Swiss francs", "symbol": " CHF", "symbolPosition": "after"};
     this.CLP = {"name": "Chilean pesos", "symbol": "$", "symbolPosition": "before"};
     this.CNY = {"name": "Chinese yuan", "symbol": "¥", "symbolPosition": "before"};
@@ -39,7 +39,7 @@ export class ExchangeGlossary {
     this.PHP = {"name": "Philippine pesos", "symbol": "₱", "symbolPosition": "before"};
     this.PKR = {"name": "Pakistani rupees", "symbol": "₨ ", "symbolPosition": "before"};
     this.PLN = {"name": "Polish zloty", "symbol": " zł", "symbolPosition": "after"};
-    this.PYG = {"name": "Paraguayan guaranies", "symbol": "₲", "symbolPosition": "before"};
+    this.PYG = {"name": "Paraguayan guaraníes", "symbol": "₲", "symbolPosition": "before"};
     this.RON = {"name": "Romanian lei", "symbol": " L", "symbolPosition": "after"};
     this.RUB = {"name": "Russian rubles", "symbol": "₽", "symbolPosition": "after"};
     this.SAR = {"name": "Saudi riyals", "symbol": "ر.س", "symbolPosition": "after"};

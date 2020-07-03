@@ -38,19 +38,27 @@ function createCalculator() {
 function showResults (calculator, glossary, response) {
   $("#output-area").html("");
   if (response) {
-    $("#output-area").append(`<div>${calculator.amount} in ${glossary[calculator.from].name} is equal to...</div>`);
+    $("#output-area").append(`<div><span class="output-amount ${calculator.from}">${calculator.amount}<span> (${glossary[calculator.from].name}) is equal to:</div>`);
     if (calculator.to === "All") {
       for (const currency in response.conversion_rates) {
         if (!(calculator.from === currency)) {
           let convertedAmount = calculator.calculateAmount(response, currency);
-          $("#output-area").append(`<div>${convertedAmount} in ${glossary[currency].name}</div>`);
+          $("#output-area").append(`<div><span class="output-amount ${currency}">${convertedAmount}</span> (${glossary[currency].name})</div>`);
         }
       } 
     } else {
       let convertedAmount = calculator.calculateAmount(response);
-      $("#output-area").append(`<div>${convertedAmount} in ${glossary[calculator.to].name}</div>`);
+      $("#output-area").append(`<div><span class="output-amount ${calculator.to}">${convertedAmount}</span> (${glossary[calculator.to].name})</div>`);
     }
+    addSymbols(glossary);
   } else {
     $("#output-area").text("There was an error, please try again.");
   }
+}
+
+function addSymbols (glossary) {
+  $(".output-amount").each(function () {
+    let currency = $(this).attr("class").split(" ").pop();
+    $(this)[glossary[currency].symbolPosition](glossary[currency].symbol);
+  });
 }
