@@ -14,7 +14,7 @@ $(document).ready(function() {
     let input = getInput();
     (async () => {
       let exchangeService = new ExchangeService();
-      const response = await exchangeService.getExchange(input.from);
+      const response = await exchangeService.getExchange();
       showResults(input, glossary, response);
     })();
   });
@@ -40,14 +40,24 @@ function showResults (input, glossary, response) {
   if (response) {
     if (input.to === "All") {
       for (const currency in response.conversion_rates) {
-        let convertedAmount = (input.amount * response.conversion_rates[currency]).toFixed(2);
+        let convertedAmount = calculateAmount(input.amount, input.from, currency, response);
         $("#output-area").append(`<div>${input.amount} in ${glossary[input.from].name} is equal to ${convertedAmount} in ${glossary[currency].name}.</div>`);
       } 
     } else {
-      let convertedAmount = (input.amount * response.conversion_rates[input.to]).toFixed(2);
+      let convertedAmount = calculateAmount(input.amount, input.from, input.to, response);
       $("#output-area").append(`<div>${input.amount} in ${glossary[input.from].name} is equal to ${convertedAmount} in ${glossary[input.to].name}.</div>`);
     }
   } else {
     $("#output-area").text("There was an error, please try again.");
   }
+}
+
+function calculateAmount (amount, from, to, response) {
+  let outputAmount;
+  if (from === "USD") {
+    outputAmount = (amount * response.conversion_rates[to]).toFixed(2);
+  } else {
+    outputAmount = ((amount / response.conversion_rates[from]) * response.conversion_rates[to]).toFixed(2);
+  }
+  return outputAmount;
 }

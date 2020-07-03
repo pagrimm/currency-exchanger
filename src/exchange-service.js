@@ -1,21 +1,21 @@
 export class ExchangeService {
-  async getExchange(currency) {
-    if (!sessionStorage.getItem(`${currency}Response`)) {
+  async getExchange() {
+    if (!sessionStorage.getItem(`exchangeResponse`)) {
       try {
-        let response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/${currency}`);
+        let response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`);
         let jsonResponse;
-        if (response.ok && response.status == 200 && response.result !== "error") {
+        if (response.ok && response.status == 200) {
           jsonResponse = await response.json();
         } else {
           jsonResponse = false;
         }
-        sessionStorage.setItem(`${currency}Response`, JSON.stringify(jsonResponse));
+        sessionStorage.setItem(`exchangeResponse`, JSON.stringify(jsonResponse));
         return jsonResponse;
       } catch(error) {
         return false;
       }
     } else {
-      let response = await JSON.parse(sessionStorage.getItem(`${currency}Response`));
+      let response = JSON.parse(sessionStorage.getItem(`exchangeResponse`));
       return response;
     }
   }
