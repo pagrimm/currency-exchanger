@@ -3,20 +3,24 @@ export class ExchangeService {
     if (!sessionStorage.getItem(`exchangeResponse`)) {
       try {
         let response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`);
-        let jsonResponse;
+        let output;
         if (response.ok && response.status == 200) {
-          jsonResponse = await response.json();
+          output = [true];
+          let jsonResponse = await response.json();
+          sessionStorage.setItem(`exchangeResponse`, JSON.stringify(jsonResponse));
+          output.push(jsonResponse);
         } else {
-          jsonResponse = false;
+          output = [false];
+          output.push(response);
         }
-        sessionStorage.setItem(`exchangeResponse`, JSON.stringify(jsonResponse));
-        return jsonResponse;
+        return output;
       } catch(error) {
-        return false;
+        return [false];
       }
     } else {
-      let response = JSON.parse(sessionStorage.getItem(`exchangeResponse`));
-      return response;
+      let output = [true];
+      output.push(JSON.parse(sessionStorage.getItem(`exchangeResponse`)));
+      return output;
     }
   }
 }

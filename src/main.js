@@ -49,16 +49,21 @@ function createCalculator() {
 }
 
 function checkResults (calculator, glossary, response) {
-  if (response) {
-    if (checkCurrencies(calculator, response)) {
-      showResults(calculator, glossary, response);
+  if (response[0]) {
+    if (checkCurrencies(calculator, response[1])) {
+      showResults(calculator, glossary, response[1]);
     } else {
       $("#output-area").text("Entered currency does not exist, please try again.");
       $("section.output").show();
     }
   } else {
-    $("#output-area").text("There was a network error, please try again.");
-    $("section.output").show();
+    if (response[1]) {
+      $("#output-area").text(`API returned status ${response[1].status}, please try again.`);
+      $("section.output").show();
+    } else {
+      $("#output-area").text("There was a network error, please try again.");
+      $("section.output").show();
+    }
   }
 }
 
