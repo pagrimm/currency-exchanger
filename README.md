@@ -29,8 +29,8 @@ Week 6 project for Epicodus. A program that converts currencies utilizing an exc
 
 HTML  
 CSS  
-Bootstrap 4.5.0
-jQuery 3.5.1
+Bootstrap 4.5.0  
+jQuery 3.5.1  
 Popper 1.16.1
 
 ## Legal
