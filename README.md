@@ -1,5 +1,5 @@
 # Currency Exchanger
-**Weekly Project for Epicodus**
+**Weekly Project for Epicodus**  
 **By Peter Grimm, 07.03.2020**
 
 ## Description
