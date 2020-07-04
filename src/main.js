@@ -58,7 +58,7 @@ function checkResults (calculator, glossary, response) {
     }
   } else {
     if (response[1]) {
-      $("#output-area").text(`API returned status ${response[1].status}, please try again.`);
+      $("#output-area").text(`API returned status "${response[1]}", please try again.`);
       $("section.output").show();
     } else {
       $("#output-area").text("There was a network error, please try again.");
